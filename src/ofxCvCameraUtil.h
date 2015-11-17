@@ -8,6 +8,24 @@
 
 namespace ofxCvCameraUtil
 {
+    static inline ofxCvCameraUtil::Intr toOfxCvCameraUtil(const ofxCv::Intrinsics& src)
+    {
+        ofxCvCameraUtil::Intr dst;
+        dst.f = src.getFocalLength();
+        dst.cx = src.getPrincipalPoint().x;
+        dst.cy = src.getPrincipalPoint().y;
+        dst.w = src.getImageSize().width;
+        dst.h = src.getImageSize().height;
+        return dst;
+    }
+
+    static inline cv::Mat createCameraMatrix(float cx, float cy, float f);
+    static inline void toOfxCv(const ofxCvCameraUtil::Intr& src, ofxCv::Intrinsics& dst)
+    {
+        dst.setup(createCameraMatrix(src.cx, src.cy, src.f), cv::Size(src.w, src.h));
+        return dst;
+    }
+    
     static inline void setCamera(const cv::Mat& camera_matrix, float w, float h, ofCamera& outcam)
     {
         const float cx = camera_matrix.at<double>(0, 2);

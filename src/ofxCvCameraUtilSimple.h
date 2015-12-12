@@ -41,6 +41,28 @@ namespace ofxCvCameraUtil
         return is;
     }
     
+    typedef vector<float> DistCoeffs;
+    
+    inline ostream& operator<<(ostream& os, const DistCoeffs& coeffs) {
+        int w = 8;
+        int p = 12;
+        os << fixed << setw(w) << setprecision(p);
+        for (auto& p : coeffs) {
+            os << p << std::endl;
+        }
+        return os;
+    }
+    
+    inline istream& operator>>(istream& is, DistCoeffs& coeffs) {
+        coeffs.clear();
+        while (!is.eof()) {
+            float f = 0;
+            is >> f; is.ignore(1);
+            coeffs.push_back(f);
+        }
+        return is;
+    }
+    
     static inline void setCamera(const Intr& intr, ofCamera& outcam)
     {
         float fov = ofRadToDeg(2.0f * atanf((intr.h * 0.5f) / intr.f));
@@ -77,6 +99,11 @@ namespace ofxCvCameraUtil
         file.close();
     }
     
+    static void saveIntr(string path, const ofCamera& cam, float width, float height)
+    {
+        saveIntr(path, getIntrinsics(cam, width, height));
+    }
+    
     static Intr loadIntr(string path)
     {
         Intr intr;
@@ -91,6 +118,26 @@ namespace ofxCvCameraUtil
     static void loadIntrToCamera(string path, ofCamera& outcam)
     {
         setCamera(loadIntr(path), outcam);
+    }
+    
+    static void saveDistCoeffs(string path, const DistCoeffs& dc)
+    {
+        ofFile file(path, ofFile::WriteOnly);
+        file << "#ofxCvCameraUtil::DistCoeffs" << endl;
+        file << dc;
+        file << endl;
+        file.close();
+    }
+    
+    static DistCoeffs loadDistCoeffs(string path)
+    {
+        DistCoeffs dc;
+        ofFile file(path);
+        if (!file.exists()) return DistCoeffs();
+        string tmp;
+        file >> tmp;
+        file >> dc;
+        return dc;
     }
     
     // some utils

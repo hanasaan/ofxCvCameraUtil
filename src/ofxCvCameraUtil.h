@@ -26,6 +26,16 @@ namespace ofxCvCameraUtil
         return dst;
     }
     
+    static inline DistCoeffs toOfxCvCameraUtil(const cv::Mat& dist_coeffs) {
+        int sz = dist_coeffs.cols * dist_coeffs.rows;
+        DistCoeffs dc;
+        dc.resize(sz);
+        for (int i=0; i<sz; ++i) {
+            dc[i] = dist_coeffs.ptr<double>()[i];
+        }
+        return dc;
+    }
+    
     static inline void setCamera(const cv::Mat& camera_matrix, float w, float h, ofCamera& outcam)
     {
         const float cx = camera_matrix.at<double>(0, 2);

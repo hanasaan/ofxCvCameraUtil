@@ -23,7 +23,6 @@ namespace ofxCvCameraUtil
     static inline void toOfxCv(const ofxCvCameraUtil::Intr& src, ofxCv::Intrinsics& dst)
     {
         dst.setup(createCameraMatrix(src.cx, src.cy, src.f), cv::Size(src.w, src.h));
-        return dst;
     }
     
     static inline DistCoeffs toOfxCvCameraUtil(const cv::Mat& dist_coeffs) {

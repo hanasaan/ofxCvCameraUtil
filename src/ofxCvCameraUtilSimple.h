@@ -20,10 +20,10 @@ namespace ofxCvCameraUtil
             : cx(cx), cy(cy), f(f), w(w), h(h) {}
     };
     
-    inline ostream& operator<<(ostream& os, const Intr& intr) {
+    inline std::ostream& operator<<(std::ostream& os, const Intr& intr) {
         int w = 8;
         int p = 8;
-        os << fixed << setw(w) << setprecision(p) << intr.cx << std::endl;
+        os << std::fixed << std::setw(w) << std::setprecision(p) << intr.cx << std::endl;
         os << intr.cy << std::endl;
         os << intr.f << std::endl;
         os << intr.w << std::endl;
@@ -32,7 +32,7 @@ namespace ofxCvCameraUtil
         return os;
     }
     
-    inline istream& operator>>(istream& is, Intr& intr) {
+    inline std::istream& operator>>(std::istream& is, Intr& intr) {
         is >> intr.cx; is.ignore(1);
         is >> intr.cy; is.ignore(1);
         is >> intr.f; is.ignore(1);
@@ -41,19 +41,19 @@ namespace ofxCvCameraUtil
         return is;
     }
     
-    typedef vector<float> DistCoeffs;
+    typedef std::vector<float> DistCoeffs;
     
-    inline ostream& operator<<(ostream& os, const DistCoeffs& coeffs) {
+    inline std::ostream& operator<<(std::ostream& os, const DistCoeffs& coeffs) {
         int w = 8;
         int p = 12;
-        os << fixed << setw(w) << setprecision(p);
+        os << std::fixed << std::setw(w) << std::setprecision(p);
         for (auto& p : coeffs) {
             os << p << std::endl;
         }
         return os;
     }
     
-    inline istream& operator>>(istream& is, DistCoeffs& coeffs) {
+    inline std::istream& operator>>(std::istream& is, DistCoeffs& coeffs) {
         coeffs.clear();
         while (!is.eof()) {
             float f = 0;
